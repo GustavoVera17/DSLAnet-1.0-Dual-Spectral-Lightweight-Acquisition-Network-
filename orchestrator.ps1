@@ -29,6 +29,12 @@ foreach ($v in $variants) {
         }
         
         Write-Host "[+] Completed: $v with $b blocks." -ForegroundColor Green
+        
+        Write-Host "[-] Pushing results to GitHub to prevent data loss..."
+        git add results/
+        git commit -m "Auto-save: Completed $v with $b blocks"
+        git push
+        
         Write-Host "[-] Cooling down GPU memory for 5 seconds..."
         Start-Sleep -Seconds 5
     }
