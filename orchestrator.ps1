@@ -17,6 +17,15 @@ cd "C:\CODE2026\CASSIproy2026\CASSIproy2026\DSLAnet_1.0"
 
 foreach ($v in $variants) {
     foreach ($b in $blocksList) {
+        $csvPath = "results\master_ablation_log.csv"
+        if (Test-Path $csvPath) {
+            $finished = Select-String -Path $csvPath -Pattern "^$v,$b,400," -Quiet
+            if ($finished) {
+                Write-Host "[*] Skipping Variant='$v' | Blocks=$b (Already completed 400 epochs)"
+                continue
+            }
+        }
+        
         Write-Host "[*] Launching Training: Variant='$v' | Blocks=$b | Epochs=$epochs"
         
         # Execute the python training script

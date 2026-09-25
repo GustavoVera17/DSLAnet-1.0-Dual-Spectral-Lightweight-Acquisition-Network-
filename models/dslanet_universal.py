@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+from torch.utils.checkpoint import checkpoint
 class SE_Block(nn.Module):
     def __init__(self, channels, reduction=4):
         super(SE_Block, self).__init__()
@@ -136,7 +136,7 @@ class DSLAnet_Universal(nn.Module):
         x_rgb = self.head_rgb(rgb_real)
         
         for block in self.blocks:
-            x_hsi, x_rgb = block(x_hsi, x_rgb)
+            x_hsi, x_rgb = checkpoint(block, x_hsi, x_rgb, use_reentrant=False)
             
         out = self.tail_hsi(x_hsi)
         return out
