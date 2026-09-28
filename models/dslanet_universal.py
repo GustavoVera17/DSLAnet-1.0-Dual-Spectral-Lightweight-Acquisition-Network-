@@ -105,13 +105,13 @@ class ABAC_Block_Universal(nn.Module):
         out_hsi = self.hsi_pointwise(out_hsi)
         out_hsi = self.se(out_hsi)
         
-        out_hsi_final = out_hsi + res_hsi
         if self.use_speccab:
-            out_hsi_final = self.spectral_scab(out_hsi_final)
+            out_hsi = self.spectral_scab(out_hsi)
+        out_hsi_final = out_hsi + res_hsi
             
-        out_rgb_final = out_rgb + res_rgb
         if self.use_spatcab:
-            out_rgb_final = self.spatial_scab(out_rgb_final)
+            out_rgb = self.spatial_scab(out_rgb)
+        out_rgb_final = out_rgb + res_rgb
             
         return out_hsi_final, out_rgb_final
 
